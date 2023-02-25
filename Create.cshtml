@@ -1,4 +1,4 @@
-﻿@model AchatEnLigne.Models.LignePanierCommande
+﻿@model AchatEnLigne.Models.Panier
 
 @{
     ViewData["Title"] = "Create";
@@ -6,24 +6,21 @@
 
 <h1>Create</h1>
 
-<h4>LignePanierCommande</h4>
+<h4>Panier</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Qte" class="control-label"></label>
-                <input asp-for="Qte" class="form-control" />
-                <span asp-validation-for="Qte" class="text-danger"></span>
+                <label asp-for="NombreArticles" class="control-label"></label>
+                <input asp-for="NombreArticles" class="form-control" />
+                <span asp-validation-for="NombreArticles" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommandeId" class="control-label"></label>
-                <select asp-for="CommandeId" class ="form-control" asp-items="ViewBag.CommandeId"></select>
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

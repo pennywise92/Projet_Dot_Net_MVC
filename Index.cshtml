@@ -1,48 +1,140 @@
-﻿@{
-    ViewData["Title"] = "Connexion";
+﻿@model IEnumerable<AchatEnLigne.Models.Panier>
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "Index";
+    var données = ViewBag.donnes;
 }
 
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card border-0 shadow rounded-3 my-5">
-                    <div class="card-body p-4 p-sm-5">
-                        <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-                        <form asp-action="OnPost" >
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username">
-                                <label for="floatingInput">Username</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-                                <label for="floatingPassword">Password</label>
-                            </div>
+@if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+            {
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreArticles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+            {
+                <th>
+                    IdUser
+                </th>
+                <th>
+                    IdProduit
+            </th>}
+            <th>
+                Nom Produit
+            </th>
+            
+                <th>
+                    Total
+                </th>
+            
+                <th>
+                    Gestion
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreArticles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+                </td>@if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produit)
+                </td>}
+                <td>
+                    @données.FindAsync(item.Produit).Result.Title
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+              
+            <td>
+                    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>}
+@if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Normal")
+            {
+@foreach (var item in Model) {
+<section  style="background-color: #eee;">
+    <div class="container ">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-10">
 
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
-                                <label class="form-check-label" for="rememberPasswordCheck">
-                                    Se rappeler de moi
-                                </label>
+            
+
+                <div class="card rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <div class="row d-flex justify-content-between align-items-center">
+                                <h3> @données.FindAsync(item.Produit).Result.Title</h3>
+                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                   
+                                <img src="@données.FindAsync(item.Produit).Result.URL"
+                                     class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-success btn-login text-uppercase fw-bold" type="submit">
-                                    Se Connecter
-                                </button>
+                              
+                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                           
+
+                                    <input disabled id="form1" min="0" name="Quantité" value="@Html.DisplayFor(modelItem => item.NombreArticles)" type="number"
+                                       class="form-control form-control-sm" />
+                                      
+                                    
                             </div>
-                            <hr class="my-4">
-                            <div class="d-grid mb-2">
-                                <button class="btn btn-google btn-login text-uppercase fw-bold" asp-action="Inscription" >
-                                    <i class="fab fa-google me-2"></i> S'inscrire
-                                </button>
+                                <div class="col-md-3 col-lg-2 col-xl-2 " style="flex:auto;    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;justify-content: space-between;">
+                                        <h5 class="mb-0">@Html.DisplayFor(modelItem => item.Total) Dh</h5><div class="vr"></div>
+                                    <div>
+                                            <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                                            <a class="btn btn-success"  asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                                            
+                                        </div>
                             </div>
-                            
-                        </form>
+                               
+                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                            </div>
+                                
+                        </div>
                     </div>
                 </div>
+
+
+                    
+
             </div>
         </div>
     </div>
-</body>
-<
-
+        </section>
+    }
+    <div class="card" style="align-items: center;">
+        <a class="btn btn-warning btn-lg" asp-controller="Home" asp-action="AddCommande">Commander</a>
+    </div>
+}
+<style>
+body{
+        background: #eee;
+}
+</style>
