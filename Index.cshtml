@@ -1,136 +1,209 @@
-﻿@model IEnumerable<AchatEnLigne.Models.Commande>
-@using System.Security.Claims;
+﻿@model IEnumerable<AchatEnLigne.Models.Produit>
 @{
-    ViewData["Title"] = "Index";
-    var données = ViewBag.Produit;
-    var panier = ViewBag.panier;
-    List<Commande> commande=new();
-    List<int> Verification = new();
-
+    ViewData["Title"] = "Bienvenue !";
 }
-@if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
-{
-    <h1>Index</h1>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Adresse)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Panier)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+
+<!-- Remove the container if you want to extend the Footer to full width. -->
+
+
+
+
+
+<!-- End of .container -->
+<!-- Design inspired from https://www.hotjar.com/ -->
+<div class="jumbotron">
+    <div class="container text-center text-lg-left">
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-4">
+                    welcome to the best ecom shop <span class="highlight-word">Gshop !</span>
+                </h1>
+                <p class="lead">we are always at your service once you finish shopping , click here to confirm your order !</p>
+                <span class="text-center d-inline-block">
+                    <a asp-action="Index" asp-controller="Paniers" class="btn btn-warning btn-lg w-100"  role="button">free of charge!</a>
+                    <p class="text-muted">Cash On Delivery</p>
+                </span>
+
+            </div>
+            <div class="col-lg-4 align-items-center d-flex">
+                <img src="https://img.freepik.com/free-vector/online-shopping-concept-illustration_114360-1084.jpg?w=996&t=st=1677095470~exp=1677096070~hmac=a3968c06ff951f2b4fb1a5b730466c29ad049fe4d115760c4013ecd76782dd2a" alt="" class="img-fluid">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="p-5 text-center bg-image rounded-3" style="
+    background-image: url('https://img.freepik.com/free-photo/cyber-monday-retail-sales_23-2148688493.jpg?w=1060&t=st=1677095697~exp=1677096297~hmac=212a4c8abd08f05e4d8bd268d3e5c5c0200454e2817abf256bb5e0d8445cfb63');
+    height: 300px;
+  ">
+    <div class="mask" style="background-color: rgba(249,251,231,1.0;width: 80%;
+    height: 80%;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-white">
+                <h1 class="mb-3" style="color: #20c997"> products</h1>
+                <h4 class="mb-3" style="color: #000000">we offer the best selection of products in the market</h4>
+                <a class="btn btn-outline-light btn-lg" href="#!" role="button">Discover!</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section >
+    <div class=" text-center container ">
+
+
+        <div class="row m-2">
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Adresse)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Panier.Id)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <div class="card" style="box-shadow: 8px 0px 20px 0px #8c9cac;border-radius: 20px;border:0px">
+
+                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                         data-mdb-ripple-color="light">
+                            <img src=@item.URL alt="" style="height: 310px;width: 100%;    border-radius: 20px;" />
+
+                            <a href="#!">
+                                <div class="mask">
+                                    <div class="d-flex justify-content-start align-items-end h-100">
+                                        <h5><span class="badge bg-warning ms-2">New</span></h5>
+                                    </div>
+                                </div>
+                                <div class="hover-overlay">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <a href="" class="text-reset">
+                                <h5 class="card-title mb-3">@Html.DisplayFor(modelItem => item.Title)</h5>
+                            </a>
+                            <a href="" class="text-reset">
+                                <p>@Html.DisplayFor(modelItem => item.Genre)</p>
+                            </a>
+                            <h6 class="mb-3">@Html.DisplayFor(modelItem => item.Price) Dh</h6>
+                            <h6 class="mb-3">@Html.DisplayFor(modelItem => item.Stock) : Stock</h6>
+                            <form asp-route-id="@item.Id" method="get" asp-action="AddPanier">
+                                <div class="d-flex" style="justify-content:center;align-items:center">
+
+                                    <input style="width: 5rem; margin-right:1rem" asp type="number" name="Quantité" placeholder="Quantité" value="1" min="0" max="@item.Stock">
+                                    <button class="btn btn-warning btn-block">Ajouter au panier</button>
+
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-}
-@foreach (var item in Model)
-{
-    commande.Add(item);
-}
-
-
-   
-    @foreach (var w in commande)
-    {
-        @if (!Verification.Contains(w.NumCommande))
-        {
-             <section class="h-100 h-custom" style="background-color: #eee;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-8 col-xl-6">
-        <div class="card border-top border-bottom border-3" style="border-color: #f37a27 !important;">
-          <div class="card-body p-5">
-
-                            <p class="lead fw-bold mb-5" style="color: #f37a27;">Recu d'achat</p>
-            <div class="row">
-                <div class="col mb-3">
-                    <p class="small text-muted mb-1">Date</p>
-                                        <p> @Html.DisplayFor(modelItem => w.DateTime)</p>
-                </div>
-                <div class="col mb-3">
-                    <p class="small text-muted mb-1">Order No.</p>
-                    <p> @Html.DisplayFor(modelItem => w.NumCommande)</p>
-                                        
-                </div>
-            </div>
-            @foreach(var k in commande.Where(v=>v.NumCommande==w.NumCommande)){
-        <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
-            <div class="row">
-                <div class="col-md-6 col-lg-6">
-                                                <p>@données.FindAsync(k.produit).Result.Title</p>
-                </div>
-                <div class="col-md-3 col-lg-3">
-                                                <p>@k.NombreArticles</p>
-                </div>
-                <div class="col-md-3 col-lg-3">
-                                                <p>@données.FindAsync(k.produit).Result.Price</p>
-                </div>
-            </div>
-
-            </div>
-        }
-       
-            <div class="row">
-              <div class="col-lg-12">
-
-                <div class="horizontal-timeline">
-
-                 
-
-                </div>
-
-              </div>
-            </div>
-             <div class="col mb-3">
-                    <p class="small text-muted mb-1">Adresse:</p>
-                                    <p>@Html.DisplayFor(Modelitem=>w.Adresse)</p>
-                </div>
-                             
-            <p class="mt-4 pt-2 mb-0">Vous avez un probléme? <a href="#!" style="color: #f37a27;">Contacter nous</a></p>
-
-          </div>
         </div>
-      </div>
+
+
+
     </div>
-  </div>
-                        </section>
-            Verification.Add(w.NumCommande);
+</section>
+<hr class="hr" />
+<div class='container-fluid mx-auto mt-5 mb-5 col-12' style="text-align: center">
+    <div class="hd"><h1> weshop is here for you</h1></div>
+    <p><small class="text-muted">we always deliver your package on time <br />relax your order is in safe hands.</small></p>
+    <div class="row" style="justify-content: center">
+        <div class="card col-md-3 col-12">
+            <div class="card-content">
+                <div class="card-body"> <img class="img" src="https://i.imgur.com/S7FJza5.png" />
+                    <div class="shadow"></div>
+                    <div class="card-title"><h5> Livraison Gratuite </h5></div>
+                    <div class="card-subtitle">
+                        <p> <small class="text-muted">free of charge delivery for you!</small> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-md-3 col-12 ml-2">
+            <div class="card-content">
+                <div class="card-body"> <img class="img" src="https://i.imgur.com/xUWJuHB.png" />
+                    <div class="card-title"><h5> A l'écoute </h5></div>
+                    <div class="card-subtitle">
+                        <p> <small class="text-muted">we are 24/7 to assist you , your satisfaction is our priority</small> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-md-3 col-12 ml-2">
+            <div class="card-content">
+                <div class="card-body"> <img class="img rck" src="https://i.imgur.com/rG3CGn3.png" style="height:100px;width:100px"/>
+                    <div class="card-title"><h5>Votre bien étre est notre priorité</h5></div>
+                    <div class="card-subtitle">
+                        <p> <small class="text-muted">the best products in the market.</small> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        }           
+</div>
+
+<!-- Carousel wrapper -->
+
+    <!-- Controls -->
   
+    <!-- Inner -->
+<div class="carousel-inner py-4" style="background-color:#c5cae9">
+        <!-- Single item -->
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row">
+                    
 
-    }
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <img class="rounded-circle shadow-1-strong mb-4"
+                         src="https://media.licdn.com/dms/image/C4D03AQE3tvREJUgmsg/profile-displayphoto-shrink_800_800/0/1627420012215?e=1682553600&v=beta&t=3ndCfXw3sMyzDsqxwFYuI0XsmnhGV8MVp9NLsQ-V-fw" alt="avatar"
+                             style="width: 150px;" />
+                        <h5 class="mb-3">Mezouari Adam</h5>
+                        <p>Web Developer</p>
+                        <p class="text-muted">
+                            <i class="fas fa-quote-left pe-2"></i>
+                            never settle for good , when you're destined to do great'...
+                        </p>
+                        <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li>
+                                <i class="fas fa-star-half-alt fa-sm"></i>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <img class="rounded-circle shadow-1-strong mb-4"
+                         src="https://media.licdn.com/dms/image/C5603AQGRrVhZz7mlrQ/profile-displayphoto-shrink_800_800/0/1653953099796?e=1682553600&v=beta&t=s81bfQ4ASZGUEXa-_bqHHKFnJLs2L_rglGLjIA3ZwKI" alt="avatar"
+                             style="width: 150px;" />
+                        <h5 class="mb-3">Jerrari yasser</h5>
+                        <p>web developer</p>
+                        <p class="text-muted">
+                            <i class="fas fa-quote-left pe-2"></i>
+                            consistency is the key
+                        </p>
+                        <ul class="list-unstyled d-flex justify-content-center text-warning mb-0">
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="fas fa-star fa-sm"></i></li>
+                            <li><i class="far fa-star fa-sm"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     
-   
-
-
-
-
-
-
-
+    </div>
+    <!-- Inner -->
+</div>
+<!-- Carousel wrapper -->
