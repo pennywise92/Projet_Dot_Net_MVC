@@ -1,4 +1,4 @@
-﻿@model AchatEnLigne.Models.Commande
+﻿@model AchatEnLigne.Models.LignePanierCommande
 
 @{
     ViewData["Title"] = "Details";
@@ -7,24 +7,30 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Commande</h4>
+    <h4>LignePanierCommande</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Adresse)
+            @Html.DisplayNameFor(model => model.Qte)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Adresse)
+            @Html.DisplayFor(model => model.Qte)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Panier)
+            @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Panier.Id)
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Commande)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Commande.Id)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.LignepanierCommandeId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
