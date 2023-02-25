@@ -1,0 +1,97 @@
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] -Gshop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AchatEnLigne.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-gradient border-bottom box-shadow mb-3" style="background:#80d8ff">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gshop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                         @if ((User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == ("Admin")) || (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == ("Normal")))
+                    {
+                        <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="color: #20c997">Home</a>
+                        </li>
+                    }
+                       
+                        
+                        @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Paniers" asp-action="" style="color: #20c997">Panier</a>
+                            </li>
+                        }
+                         @if ((User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == ("Admin")) )
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Produits" asp-action="" style="color: #20c997">Product</a>
+                        </li>}
+                        @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="LignePanierCommandes" asp-action="" style="color: #20c997">LignePanCom</a>
+                        </li>}
+                        @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin") { 
+                        <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="" style="color: #20c997">Users</a>
+                        </li>
+                        }
+                        @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Commandes" asp-action="" style="color: #20c997">Commandes</a>
+                            </li>}
+                        
+                    </ul>
+                      @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Normal")
+                        {
+                        <a class="btn btn-outline-light m-1 " style="flex:none !important;" asp-area="" asp-controller="Commandes" asp-action="">Voir mes commandes</a>
+                        <a class="btn btn-outline-success m-1 " style="flex:none !important;" asp-area="" asp-controller="Paniers" asp-action="">Voir mon Panier</a>
+                            }
+                        
+                    @if ((User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value != ("Admin")) && (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value != ("Normal")))
+                    {
+                        <a class="btn btn-success m-1 " asp-area="" asp-controller="Logins" asp-action="">Connexion</a>
+                        <a class="btn btn-warning " asp-area="" asp-controller="Logins" asp-action="Inscription">Inscription</a>
+                    }
+                    @if ((User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == ("Admin")) || (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == ("Normal")))
+                        {
+                    <a class="btn btn-danger" asp-controller="Logins" asp-action="OnGetLogout">Se déconnecter</a>
+                        }
+                        
+                    
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+   
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - weshop - <a asp-area="" asp-controller="Home" asp-action="Privacy"> Done by Adam and yasser , hope you liked it.</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
